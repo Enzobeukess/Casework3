@@ -27,6 +27,17 @@ function toHex(buffer) {
   return [...new Uint8Array(buffer)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+// PayFast's backend verifies signatures using PHP's urlencode(), which differs
+// from JS's encodeURIComponent() for a handful of characters: ! ' ( ) * ~ are
+// left unescaped by encodeURIComponent but PHP encodes them. Space becomes '+'
+// in both once we do the replacement below.
+function phpStyleUrlEncode(str) {
+  return encodeURIComponent(str)
+    .replace(/%20/g, '+')
+    .replace(/[!'()*]/g, (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase())
+    .replace(/~/g, '%7E');
+}
+
 // Builds the PayFast MD5 signature. `fields` must be an object whose
 // insertion order matches the order the same fields are posted to PayFast.
 // Cloudflare Workers' Web Crypto supports MD5 as a non-standard extension,
@@ -34,11 +45,11 @@ function toHex(buffer) {
 export async function buildSignature(fields, passphrase) {
   const paramString = Object.entries(fields)
     .filter(([, v]) => v !== undefined && v !== null && v !== '')
-    .map(([k, v]) => `${k}=${encodeURIComponent(String(v).trim()).replace(/%20/g, '+')}`)
+    .map(([k, v]) => `${k}=${phpStyleUrlEncode(String(v).trim())}`)
     .join('&');
 
   const full = passphrase
-    ? `${paramString}&passphrase=${encodeURIComponent(passphrase.trim()).replace(/%20/g, '+')}`
+    ? `${paramString}&passphrase=${phpStyleUrlEncode(passphrase.trim())}`
     : paramString;
 
   const data = new TextEncoder().encode(full);
