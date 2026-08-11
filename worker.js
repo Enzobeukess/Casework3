@@ -50,8 +50,8 @@ async function handleCreatePayment(request, env) {
   const amount = env.PAYFAST_CONSULT_AMOUNT || '500.00'; // ZAR - set your real fee as an env var
 
   const fields = {
-    merchant_id: env.PAYFAST_MERCHANT_ID,
-    merchant_key: env.PAYFAST_MERCHANT_KEY,
+    merchant_id: (env.PAYFAST_MERCHANT_ID || '').trim(),
+    merchant_key: (env.PAYFAST_MERCHANT_KEY || '').trim(),
     return_url: `${origin}/booking-confirmed`,
     cancel_url: `${origin}/booking-cancelled`,
     notify_url: `${origin}/api/payfast-notify`,
