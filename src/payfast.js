@@ -54,7 +54,13 @@ export async function buildSignature(fields, passphrase) {
 
   const data = new TextEncoder().encode(full);
   const digest = await crypto.subtle.digest({ name: 'MD5' }, data);
-  return toHex(digest);
+  const signature = toHex(digest);
+
+  // TEMPORARY DEBUG - remove once signature mismatch is resolved
+  console.log('PAYFAST DEBUG STRING:', full);
+  console.log('PAYFAST DEBUG SIGNATURE:', signature);
+
+  return signature;
 }
 
 export function payfastHost(env) {

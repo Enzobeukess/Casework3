@@ -52,8 +52,8 @@ async function handleCreatePayment(request, env) {
   const fields = {
     merchant_id: (env.PAYFAST_MERCHANT_ID || '').trim(),
     merchant_key: (env.PAYFAST_MERCHANT_KEY || '').trim(),
-    return_url: `${origin}/booking-confirmed`,
-    cancel_url: `${origin}/booking-cancelled`,
+    return_url: `${origin}/booking-confirmed?date=${slotDate}`,
+    cancel_url: `${origin}/booking-cancelled?date=${slotDate}`,
     notify_url: `${origin}/api/payfast-notify`,
     name_first,
     name_last,
