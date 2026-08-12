@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Not Completed — Casework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12203A; --ink-2:#1C2F52;
+    --paper:#EDEAE2; --paper-2:#F7F5F0;
+    --brass:#B08D57; --brass-light:#D3B685;
+    --oxblood:#7A2530;
+    --text-dark:#1B1B1B; --text-light:#F2EFE7;
+    --rule:#c9c4b6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--text-dark);
+    font-family:'IBM Plex Sans',sans-serif; line-height:1.6;
+    min-height:100vh; display:flex; flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  header{padding:22px 32px;border-bottom:1px solid var(--rule);}
+  .logo{font-family:'Newsreader',serif;font-weight:600;font-size:1.2rem;}
+  .logo span{color:var(--oxblood);}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 24px;}
+  .card{max-width:540px;width:100%;text-align:center;}
+  .stamp{
+    display:inline-block;
+    border:3px solid var(--oxblood);
+    color:var(--oxblood);
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;font-size:0.85rem;letter-spacing:0.16em;
+    padding:10px 22px;border-radius:4px;
+    transform:rotate(-4deg);
+    margin-bottom:30px;
+    text-transform:uppercase;
+  }
+  h1{
+    font-family:'Newsreader',serif;font-weight:500;
+    font-size:clamp(1.7rem,4vw,2.3rem);margin-bottom:16px;
+  }
+  .sub{color:#4a4a44;font-size:1.02rem;max-width:440px;margin:0 auto 36px;}
+  .note{
+    background:var(--paper-2);border:1px solid var(--rule);
+    text-align:left;padding:22px 26px;margin-bottom:34px;
+    font-size:0.92rem;color:#4a4a44;
+  }
+  .note strong{color:var(--text-dark);}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;
+    padding:12px 26px;border-radius:2px;font-size:0.9rem;font-weight:500;
+    border:1px solid var(--ink);
+    transition:background .2s ease, color .2s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--text-light);}
+  .btn-primary:hover{background:var(--oxblood);border-color:var(--oxblood);}
+  .btn-ghost{background:transparent;color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink);color:var(--text-light);}
+  footer{
+    padding:24px 32px;text-align:center;
+    font-size:0.76rem;color:#8a8578;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">CASE<span>WORK</span></a>
+</header>
+
+<main>
+  <div class="card">
+    <div class="stamp">Not Completed</div>
+    <h1>Your payment wasn't completed.</h1>
+    <p class="sub">No charge was made, and your slot has not been reserved.</p>
+
+    <div class="note">
+      <strong>Good news:</strong> the consultation slot on <span id="dateOut">the date you selected</span> is still available. Nobody else can take it until a payment actually clears, so you're welcome to try again whenever suits you.
+    </div>
+
+    <div class="btns">
+      <a href="/#book" class="btn btn-primary">Try booking again</a>
+      <a href="/" class="btn btn-ghost">Return to homepage</a>
+    </div>
+  </div>
+</main>
+
+<footer>CASEWORK — AI systems for law firms</footer>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const date = params.get('date');
+  if (date) {
+    const dt = new Date(date + 'T00:00:00');
+    if (!isNaN(dt)) {
+      document.getElementById('dateOut').textContent =
+        dt.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+  }
+</script>
+
+</body>
+</html>
