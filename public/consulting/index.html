@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mainframe — Business Process &amp; AI Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0A14;
+    --void-2:#12121F;
+    --panel:#161625;
+    --cream:#E9DFC7;
+    --cream-dim:#B9AF95;
+    --phosphor:#3CFF9A;
+    --phosphor-dim:rgba(60,255,154,0.35);
+    --magenta:#FF3EA5;
+    --cyan:#4DE8FF;
+    --text:#F1EEE4;
+    --text-dim:rgba(241,238,228,0.58);
+    --rule:rgba(241,238,228,0.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;background:var(--void);}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Space Mono',monospace;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{font-family:'Unbounded',sans-serif;}
+  .term{font-family:'VT323',monospace;letter-spacing:0.04em;}
+  a{color:inherit;text-decoration:none;}
+  img,video{max-width:100%;}
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--phosphor);
+    outline-offset:3px;
+  }
+
+  ::selection{background:var(--phosphor);color:var(--void);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 34px;
+    background:linear-gradient(180deg, rgba(10,10,20,0.9), transparent);
+  }
+  .logo{
+    font-family:'Unbounded',sans-serif;font-weight:800;font-size:1.15rem;
+    letter-spacing:0.02em;
+  }
+  .logo span{color:var(--phosphor);}
+  .nav-links{display:flex;gap:30px;align-items:center;}
+  .nav-links a{
+    font-size:0.82rem;color:var(--text-dim);
+    border-bottom:1px solid transparent;padding:4px 0;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .nav-links a:hover{color:var(--phosphor);border-color:var(--phosphor);}
+  .btn{
+    display:inline-block;
+    background:var(--phosphor);color:var(--void);
+    padding:11px 22px;border-radius:2px;
+    font-size:0.82rem;font-weight:700;letter-spacing:0.02em;
+    border:1px solid var(--phosphor);
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px var(--phosphor-dim);}
+  .btn-ghost{
+    background:transparent;color:var(--text);border:1px solid var(--rule);
+  }
+  .btn-ghost:hover{border-color:var(--phosphor);color:var(--phosphor);box-shadow:0 0 16px var(--phosphor-dim);}
+
+  @media (max-width:820px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:120px 24px 60px;
+    overflow:hidden;
+  }
+  .grid-floor{
+    position:absolute;left:0;right:0;bottom:0;height:55%;
+    background-image:
+      linear-gradient(rgba(77,232,255,0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(77,232,255,0.18) 1px, transparent 1px);
+    background-size:64px 64px;
+    transform:perspective(420px) rotateX(62deg);
+    transform-origin:bottom;
+    mask-image:linear-gradient(to top, black, transparent);
+    -webkit-mask-image:linear-gradient(to top, black, transparent);
+    opacity:0.6;
+    pointer-events:none;
+  }
+  .hero-glow{
+    position:absolute;top:8%;left:50%;transform:translateX(-50%);
+    width:640px;height:640px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,62,165,0.16), transparent 60%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:'VT323',monospace;font-size:1.15rem;letter-spacing:0.18em;
+    color:var(--phosphor);text-transform:uppercase;margin-bottom:22px;
+    position:relative;z-index:2;
+  }
+  .eyebrow::before{content:"◉ ";}
+  .hero h1{
+    font-family:'Unbounded',sans-serif;font-weight:700;
+    font-size:clamp(2.1rem,6vw,4rem);line-height:1.08;
+    max-width:820px;position:relative;z-index:2;
+  }
+  .hero h1 em{
+    font-style:normal;color:transparent;
+    background:linear-gradient(90deg, var(--phosphor), var(--cyan));
+    -webkit-background-clip:text;background-clip:text;
+  }
+  .hero-sub{
+    margin-top:22px;max-width:520px;color:var(--text-dim);
+    font-size:1rem;position:relative;z-index:2;
+  }
+  .hero-ctas{
+    display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;justify-content:center;
+    position:relative;z-index:2;
+  }
+  .scroll-cue{
+    margin-top:70px;font-family:'VT323',monospace;font-size:1rem;
+    color:var(--text-dim);letter-spacing:0.1em;
+    animation:bob 2.2s ease-in-out infinite;
+    position:relative;z-index:2;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+  /* ---------- 3D CANVAS (shared, fixed) ---------- */
+  #computerCanvas{
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:1;pointer-events:none;
+  }
+
+  /* ---------- ORBIT SECTION ---------- */
+  .orbit-section{
+    position:relative;
+    height:480vh;
+  }
+  .orbit-sticky{
+    position:sticky;top:0;height:100vh;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .orbit-label{
+    position:absolute;top:100px;left:50%;transform:translateX(-50%);
+    text-align:center;z-index:5;
+  }
+  .orbit-label .term{font-size:1.1rem;color:var(--phosphor);letter-spacing:0.14em;}
+  .orbit-label h2{
+    font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,3vw,1.9rem);
+    margin-top:8px;color:var(--text);
+  }
+  .orbit-counter{
+    position:absolute;bottom:60px;left:50%;transform:translateX(-50%);
+    font-family:'VT323',monospace;font-size:1.3rem;color:var(--text-dim);
+    letter-spacing:0.1em;z-index:5;
+  }
+  .orbit-counter span{color:var(--phosphor);}
+
+  .stage{
+    position:relative;width:100%;height:100%;
+    perspective:1400px;
+  }
+  .ring{
+    position:absolute;top:50%;left:50%;
+    width:0;height:0;
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .orbit-card{
+    position:absolute;top:50%;left:50%;
+    width:200px;height:340px;
+    margin:-170px 0 0 -100px;
+    border-radius:22px;
+    overflow:hidden;
+    background:var(--panel);
+    border:1px solid var(--rule);
+    box-shadow:0 20px 50px rgba(0,0,0,0.45);
+    will-change:transform, opacity;
+  }
+  .orbit-card video{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .card-tag{
+    position:absolute;top:14px;left:14px;
+    font-family:'VT323',monospace;font-size:0.95rem;
+    color:var(--phosphor);letter-spacing:0.08em;
+    background:rgba(10,10,20,0.55);padding:3px 9px;border-radius:20px;
+    z-index:2;pointer-events:none;
+  }
+  .card-controls{
+    position:absolute;left:0;right:0;bottom:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px;z-index:3;
+    opacity:0;transition:opacity .25s ease;
+  }
+  .orbit-card:hover .card-controls, .orbit-card.active .card-controls{opacity:1;}
+  .ctrl-btn{
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(10,10,20,0.6);
+    backdrop-filter:blur(4px);
+    border:1px solid rgba(241,238,228,0.25);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text);
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .ctrl-btn:hover{border-color:var(--phosphor);background:rgba(60,255,154,0.15);}
+  .ctrl-btn svg{width:15px;height:15px;fill:currentColor;}
+
+  @media (max-width:720px){
+    .orbit-card{width:150px;height:260px;margin:-130px 0 0 -75px;}
+  }
+
+  /* ---------- BOOKING (reused flow, restyled) ---------- */
+  .closing{
+    position:relative;z-index:2;
+    background:var(--void-2);
+    text-align:center;padding:120px 24px 100px;
+    border-top:1px solid var(--rule);
+  }
+  .closing .docket-no{
+    font-family:'VT323',monospace;font-size:1rem;color:var(--text-dim);
+    letter-spacing:0.1em;margin-bottom:26px;
+  }
+  .closing .case-line{
+    font-family:'Unbounded',sans-serif;font-weight:700;
+    font-size:clamp(1.6rem,4vw,2.4rem);color:var(--text);
+  }
+  .closing .versus{
+    font-family:'VT323',monospace;font-style:normal;color:var(--phosphor);
+    font-size:1.3rem;margin:10px 0;
+  }
+  .closing-sub{
+    max-width:480px;margin:24px auto 40px;color:var(--text-dim);
+  }
+  .redline-card{
+    background:var(--panel);border:1px solid var(--rule);
+    max-width:420px;margin:0 auto;text-align:left;
+    padding:30px 32px;border-radius:6px;
+  }
+  .redline-label{
+    font-family:'VT323',monospace;font-size:1.05rem;letter-spacing:0.08em;
+    color:var(--phosphor);margin-bottom:14px;
+  }
+  .redline-meta{
+    margin-top:16px;font-family:'VT323',monospace;font-size:0.95rem;
+    color:var(--text-dim);
+  }
+  #bookingForm input{
+    padding:10px 12px;border:1px solid var(--rule);
+    background:var(--void);color:var(--text);
+    font-family:'Space Mono',monospace;font-size:0.92rem;
+    border-radius:4px;
+  }
+  #bookingForm input::placeholder{color:var(--text-dim);}
+  #bookingForm .btn{border:none;cursor:pointer;width:100%;}
+
+  footer{
+    position:relative;z-index:2;
+    border-top:1px solid var(--rule);padding:30px 32px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+    background:var(--void-2);
+    font-size:0.78rem;color:var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .scroll-cue{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MAIN<span>FRAME</span></div>
+  <div class="nav-links">
+    <a href="#work">Client signals</a>
+    <a href="#book">Book a consultation</a>
+  </div>
+  <a href="#book" class="btn btn-ghost">Book a consultation</a>
+</header>
+
+<canvas id="computerCanvas"></canvas>
+
+<section class="hero">
+  <div class="grid-floor"></div>
+  <div class="hero-glow"></div>
+  <div class="eyebrow term">SYSTEM READY</div>
+  <h1>Business process &amp; AI consulting, <em>booted from first principles.</em></h1>
+  <p class="hero-sub">We diagnose the manual work slowing your business down, then build the automation to run it — email, documents, and everything between — with the machine to prove it.</p>
+  <div class="hero-ctas">
+    <a href="#book" class="btn">Book a paid consultation</a>
+    <a href="#work" class="btn btn-ghost">See client signals ↓</a>
+  </div>
+  <div class="scroll-cue">▼ SCROLL TO BOOT ▼</div>
+</section>
+
+<section class="orbit-section" id="work">
+  <div class="orbit-sticky">
+    <div class="orbit-label">
+      <div class="term">CLIENT_SIGNALS.LOG</div>
+      <h2>What clients say, on record.</h2>
+    </div>
+    <div class="stage">
+      <div class="ring" id="ring">
+        <!-- cards injected by JS -->
+      </div>
+    </div>
+    <div class="orbit-counter term">SIGNAL <span id="cardIndex">01</span> / 06</div>
+  </div>
+</section>
+
+<section class="closing" id="book">
+  <div class="docket-no term">SESSION_2026 // BOOKING_MODULE.EXE</div>
+  <div class="case-line">Your process</div>
+  <div class="versus">vs.</div>
+  <div class="case-line">Everything still done by hand</div>
+  <p class="closing-sub">Book a paid diagnostic consultation. We'll tell you exactly what to automate first, and the fee comes off your build cost either way.</p>
+
+  <div class="redline-card">
+    <div class="redline-label" id="slotLabel">Checking next available slot…</div>
+    <form id="bookingForm" style="margin-top:10px;">
+      <div style="display:grid;gap:12px;">
+        <input type="text" id="name_first" placeholder="First name" required>
+        <input type="text" id="name_last" placeholder="Last name">
+        <input type="email" id="email_address" placeholder="Email address" required>
+        <button type="submit" class="btn" id="bookBtn">Pay &amp; book this slot</button>
+      </div>
+    </form>
+    <div class="redline-meta"><span id="formStatus"></span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="font-size:1rem;">MAIN<span>FRAME</span></div>
+  <div class="term" style="font-size:0.95rem;">Business process + AI consulting — built once, maintained monthly</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ BOOKING FLOW — logic identical to the Casework site ============ */
+(function(){
+  const slotLabel = document.getElementById('slotLabel');
+  const form = document.getElementById('bookingForm');
+  const bookBtn = document.getElementById('bookBtn');
+  const formStatus = document.getElementById('formStatus');
+
+  fetch('/api/check-availability')
+    .then(r => r.json())
+    .then(d => {
+      const dt = new Date(d.date + 'T00:00:00');
+      const formatted = dt.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' });
+      slotLabel.textContent = `Next available slot — ${formatted}, ${d.time}`;
+    })
+    .catch(() => { slotLabel.textContent = 'Book a consultation slot'; });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    bookBtn.disabled = true;
+    bookBtn.textContent = 'Redirecting to PayFast…';
+    formStatus.textContent = '';
+
+    try {
+      const res = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name_first: document.getElementById('name_first').value,
+          name_last: document.getElementById('name_last').value,
+          email_address: document.getElementById('email_address').value,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong');
+
+      const payForm = document.createElement('form');
+      payForm.method = 'POST';
+      payForm.action = data.action;
+      Object.entries(data.fields).forEach(([k, v]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = k;
+        input.value = v;
+        payForm.appendChild(input);
+      });
+      document.body.appendChild(payForm);
+      payForm.submit();
+    } catch (err) {
+      formStatus.textContent = err.message;
+      bookBtn.disabled = false;
+      bookBtn.textContent = 'Pay & book this slot';
+    }
+  });
+})();
+
+/* ============ VIDEO ORBIT RING ============ */
+const VIDEOS = [
+  '/videos/placeholder-1.mp4', '/videos/placeholder-2.mp4', '/videos/placeholder-3.mp4',
+  '/videos/placeholder-4.mp4', '/videos/placeholder-5.mp4', '/videos/placeholder-6.mp4'
+];
+const POSTERS = [
+  '/videos/poster-1.jpg', '/videos/poster-2.jpg', '/videos/poster-3.jpg',
+  '/videos/poster-4.jpg', '/videos/poster-5.jpg', '/videos/poster-6.jpg'
+];
+
+const playIcon = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const pauseIcon = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+const fsIcon = '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>';
+
+const ring = document.getElementById('ring');
+const N = VIDEOS.length;
+const cards = [];
+
+for (let i = 0; i < N; i++) {
+  const card = document.createElement('div');
+  card.className = 'orbit-card';
+  card.innerHTML = `
+    <div class="card-tag term">REC_${String(i + 1).padStart(2, '0')}</div>
+    <video src="${VIDEOS[i]}" poster="${POSTERS[i]}" muted loop playsinline preload="metadata"></video>
+    <div class="card-controls">
+      <button class="ctrl-btn play-btn" aria-label="Play">${playIcon}</button>
+      <button class="ctrl-btn fs-btn" aria-label="Fullscreen">${fsIcon}</button>
+    </div>
+  `;
+  ring.appendChild(card);
+  cards.push(card);
+
+  const video = card.querySelector('video');
+  const playBtn = card.querySelector('.play-btn');
+  const fsBtn = card.querySelector('.fs-btn');
+
+  const toggle = () => {
+    if (video.paused) { video.play(); playBtn.innerHTML = pauseIcon; }
+    else { video.pause(); playBtn.innerHTML = playIcon; }
+  };
+  playBtn.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+  video.addEventListener('click', toggle);
+  fsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (video.requestFullscreen) video.requestFullscreen();
+    else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+  });
+}
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const radius = window.innerWidth < 720 ? 300 : 460;
+let currentAngle = 0;
+let targetAngle = 0;
+
+function layoutCards(angle) {
+  const step = 360 / N;
+  let frontIndex = 0, frontDist = 999;
+  cards.forEach((card, i) => {
+    const cardAngle = (angle + i * step) % 360;
+    const rad = (cardAngle * Math.PI) / 180;
+    const dist = Math.min(Math.abs(cardAngle), 360 - Math.abs(cardAngle));
+    const scale = 0.62 + 0.45 * (1 - dist / 180);
+    const opacity = 0.28 + 0.72 * (1 - dist / 180);
+    card.style.transform =
+      `translate3d(${Math.sin(rad) * radius}px, 0, ${Math.cos(rad) * radius}px) scale(${scale})`;
+    card.style.opacity = opacity;
+    card.style.zIndex = Math.round(Math.cos(rad) * 100);
+    card.classList.toggle('active', dist < 20);
+    if (dist < frontDist) { frontDist = dist; frontIndex = i; }
+  });
+  document.getElementById('cardIndex').textContent = String(frontIndex + 1).padStart(2, '0');
+}
+
+function onScroll() {
+  const section = document.querySelector('.orbit-section');
+  const rect = section.getBoundingClientRect();
+  const total = rect.height - window.innerHeight;
+  const progress = Math.min(1, Math.max(0, -rect.top / total));
+  targetAngle = progress * 720; // two full revolutions across the section
+  updateComputerScroll(progress);
+}
+
+function raf() {
+  currentAngle += (targetAngle - currentAngle) * (prefersReducedMotion ? 1 : 0.08);
+  layoutCards(currentAngle);
+  requestAnimationFrame(raf);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+layoutCards(0);
+requestAnimationFrame(raf);
+
+/* ============ 3D RETRO COMPUTER (procedural, no external assets) ============ */
+let scrollProgress = 0;
+function updateComputerScroll(p) { scrollProgress = p; }
+
+const canvas = document.getElementById('computerCanvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0.15, 6.2);
+
+scene.add(new THREE.AmbientLight(0x554466, 0.7));
+const key = new THREE.DirectionalLight(0xfff2d9, 0.9);
+key.position.set(3, 4, 5);
+scene.add(key);
+const rimMagenta = new THREE.PointLight(0xff3ea5, 3.2, 12);
+rimMagenta.position.set(-3, 1, -2);
+scene.add(rimMagenta);
+const rimCyan = new THREE.PointLight(0x4de8ff, 2.6, 12);
+rimCyan.position.set(3, -1, -2);
+scene.add(rimCyan);
+
+const computer = new THREE.Group();
+
+const creamMat = new THREE.MeshStandardMaterial({ color: 0xE9DFC7, roughness: 0.55, metalness: 0.05 });
+const bezelMat = new THREE.MeshStandardMaterial({ color: 0x9A9280, roughness: 0.6 });
+const darkMat = new THREE.MeshStandardMaterial({ color: 0x1b1b22, roughness: 0.4 });
+
+// Monitor case
+const monitor = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.6, 1.3), creamMat);
+monitor.position.y = 0.5;
+computer.add(monitor);
+
+// CRT hump at the back
+const hump = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.0, 0.7), creamMat);
+hump.position.set(0, 0.5, -0.85);
+computer.add(hump);
+
+// Bezel
+const bezel = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.25, 0.08), bezelMat);
+bezel.position.set(0, 0.55, 0.66);
+computer.add(bezel);
+
+// Screen (canvas texture)
+const screenCanvas = document.createElement('canvas');
+screenCanvas.width = 256; screenCanvas.height = 200;
+const sctx = screenCanvas.getContext('2d');
+const screenTexture = new THREE.CanvasTexture(screenCanvas);
+const screenMat = new THREE.MeshBasicMaterial({ map: screenTexture });
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.38, 1.05), screenMat);
+screen.position.set(0, 0.55, 0.71);
+computer.add(screen);
+
+// Screen glow (bloom trick)
+const glowMat = new THREE.MeshBasicMaterial({ color: 0x3cff9a, transparent: true, opacity: 0.18 });
+const glow = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.3), glowMat);
+glow.position.set(0, 0.55, 0.7);
+computer.add(glow);
+
+// Stand
+const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 0.35, 12), bezelMat);
+neck.position.set(0, -0.42, 0);
+computer.add(neck);
+const base = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.6, 0.1, 20), creamMat);
+base.position.set(0, -0.62, 0);
+computer.add(base);
+
+// Keyboard
+const keyboard = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.12, 0.7), creamMat);
+keyboard.position.set(0, -1.15, 1.15);
+keyboard.rotation.x = -0.08;
+computer.add(keyboard);
+
+const keyGeo = new THREE.BoxGeometry(0.13, 0.05, 0.13);
+const keysMesh = new THREE.InstancedMesh(keyGeo, darkMat, 40);
+let ki = 0;
+const dummy = new THREE.Object3D();
+for (let r = 0; r < 4; r++) {
+  for (let c = 0; c < 10; c++) {
+    dummy.position.set(-0.78 + c * 0.175, -1.08 + r * 0.001, 0.9 + r * 0.15);
+    dummy.rotation.x = -0.08;
+    dummy.updateMatrix();
+    keysMesh.setMatrixAt(ki++, dummy.matrix);
+  }
+}
+computer.add(keysMesh);
+
+// Power light
+const powerLight = new THREE.Mesh(
+  new THREE.SphereGeometry(0.035, 8, 8),
+  new THREE.MeshBasicMaterial({ color: 0x3cff9a })
+);
+powerLight.position.set(0.65, 0.05, 0.71);
+computer.add(powerLight);
+
+computer.scale.setScalar(1.35);
+scene.add(computer);
+
+// Terminal text sequence
+const PHASES = [
+  ['SYSTEM BOOT...', 'LOADING CONSULTING', 'ENGINE...', '', 'READY_'],
+  ['CLIENT_SIGNALS.LOG', 'READING RECORDS...', '', '6 SIGNALS FOUND', 'DISPLAYING_'],
+  ['BOOKING_MODULE.EXE', 'ONE SLOT / WEEK', 'FRI 13:00-14:00', '', 'AWAITING INPUT_'],
+];
+let phaseIndex = -1;
+let typedLines = [];
+let typeTimer = null;
+
+function drawScreen() {
+  sctx.fillStyle = '#050a08';
+  sctx.fillRect(0, 0, 256, 200);
+  sctx.fillStyle = '#3cff9a';
+  sctx.font = '16px monospace';
+  sctx.textBaseline = 'top';
+  typedLines.forEach((line, i) => sctx.fillText(line, 10, 12 + i * 22));
+  // scanlines
+  sctx.fillStyle = 'rgba(0,0,0,0.25)';
+  for (let y = 0; y < 200; y += 4) sctx.fillRect(0, y, 256, 1);
+  screenTexture.needsUpdate = true;
+}
+
+function typePhase(phase) {
+  clearTimeout(typeTimer);
+  typedLines = [];
+  let lineIdx = 0, charIdx = 0;
+  function step() {
+    if (lineIdx >= phase.length) return;
+    const line = phase[lineIdx];
+    typedLines[lineIdx] = line.slice(0, charIdx);
+    drawScreen();
+    charIdx++;
+    if (charIdx > line.length) { lineIdx++; charIdx = 0; }
+    typeTimer = setTimeout(step, 28);
+  }
+  step();
+}
+
+function updateTerminalPhase() {
+  const idx = scrollProgress < 0.08 ? 0 : scrollProgress > 0.85 ? 2 : 1;
+  if (idx !== phaseIndex) { phaseIndex = idx; typePhase(PHASES[idx]); }
+}
+typePhase(PHASES[0]);
+
+function animate() {
+  requestAnimationFrame(animate);
+  if (!prefersReducedMotion) {
+    computer.rotation.y = (currentAngle * Math.PI) / 180 * 0.6 + Math.sin(Date.now() * 0.0005) * 0.05;
+    computer.position.y = Math.sin(Date.now() * 0.0006) * 0.08;
+  } else {
+    computer.rotation.y = (currentAngle * Math.PI) / 180 * 0.6;
+  }
+  updateTerminalPhase();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>
